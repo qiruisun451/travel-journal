@@ -7,14 +7,16 @@
   <meta name="description" content="A personal travel journal, one chapter per journey. 个人旅行手记，一段旅程一个章节。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800&family=EB+Garamond:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@chinese-fonts/jhlst@3.0.0/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body id="top">
   <a class="skip" href="#main">Skip to content 跳到正文</a>
 
   <nav aria-label="Primary">
-    <a class="corner tl" href="index.html#about">About <span lang="zh-Hans">关于</span></a>
+    <a class="corner tl seal" href="index.html" aria-label="Home 首页"><span class="kao" aria-hidden="true"></span></a>
     <a class="corner tr" href="index.html#chapters">Travel <span lang="zh-Hans">旅行</span></a>
     <a class="corner bl" href="japan.html">Read <span lang="zh-Hans">阅读</span></a>
     <a class="corner br" href="index.html#contact">Contact <span lang="zh-Hans">联系</span></a>
@@ -25,7 +27,6 @@
 
     <section aria-label="Highlights">
       <div class="collage" id="home-collage">
-        <img class="logo" src="assets/logo.svg" alt="" width="360" height="220">
       </div>
       <p class="intro">One chapter for every journey.</p>
       <p lang="zh-Hans">一段旅程，一个章节。先从日本的十五天写起。</p>
@@ -57,6 +58,11 @@
       <!-- 把邮箱换成你自己的 -->
       <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
     </section>
+
+    <footer class="site-foot">
+      <a class="label" href="#about">About <span class="zh" lang="zh-Hans">关于</span></a>
+      <a class="label" href="#top">Back to top <span class="zh" lang="zh-Hans">回到顶部</span> ↑</a>
+    </footer>
   </main>
 
   <script src="data/chapters.js"></script>

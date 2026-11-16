@@ -30,7 +30,7 @@
       captions: {
         1: "D1 · 关西机场 → 大阪 / 34.2 km · 南海电铁",
         2: "D2 · 大阪慢日 · 难波 / 道顿堀",
-        3: "D3 · 大阪 · 心斋桥 / 梅田",
+        3: "D3 · 大阪 · 道顿堀 / 梅田",
         4: "D4 · 大阪 → 奈良 / 21.1 km",
         5: "D5 · 奈良 → 大阪 / 23.4 km",
         6: "D6 · 大阪 ⇄ 京都 / 84.8 km",
@@ -288,7 +288,7 @@
       "</div>" +
       '<div class="route-connector"><div class="route-conn-kicker"><b>D9</b> · Night bus 夜巴<br>Osaka → Tokyo</div>' +
         '<div class="route-conn-main">Osaka <span class="arrow">→</span> Tokyo</div>' +
-        '<div class="route-conn-meta"><b>374.8 km</b>10.13 21:21 → 10.14 05:33<br>约 8 小时 · 夜间移动</div></div>';
+        '<div class="route-conn-meta"><b>374.8 km</b>2026.10.13 21:21 → 2026.10.14 05:33<br>约 8 小时 · 夜间移动</div></div>';
 
     var started = false;
     function start() {

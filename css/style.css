@@ -9,7 +9,10 @@
   --line: rgba(17, 17, 17, 0.85);
 
   --sans: "Archivo", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --serif: "Instrument Serif", "Times New Roman", "Songti SC", "STSong", "Noto Serif SC", "SimSun", serif;
+  /* 中文统一用京华老宋体；英文正文 EB Garamond，英文大字标题保留 Instrument Serif */
+  --zh-serif: "KingHwa_OldSong", "Songti SC", "STSong", "Noto Serif SC", "SimSun";
+  --serif: "Instrument Serif", var(--zh-serif), "Times New Roman", serif;
+  --body: "EB Garamond", var(--zh-serif), "Times New Roman", serif;
 
   --gutter: clamp(16px, 2.4vw, 32px);
   --edge: clamp(16px, 2vw, 28px);
@@ -24,7 +27,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--body);
   font-size: 18px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -63,6 +66,21 @@ ol, ul { list-style: none; }
 .corner span { font-weight: 500; letter-spacing: 0; }
 .corner:hover, .corner[aria-current="page"] { background: var(--ink); color: var(--bg); }
 .corner.tl { top: var(--edge); left: var(--edge); }
+
+/* 花押：左上角的朱红落款，点击回首页（参考落款印章式 logo） */
+:root { --seal: #b3262c; }
+.corner.seal, .corner.seal:hover { background: var(--bg); color: var(--seal); padding: 2px 8px; }
+.corner .kao {
+  display: block; width: 50px; height: 40px; flex: none;
+  background-color: currentColor;
+  -webkit-mask: url(../assets/logo-kao.png) center / contain no-repeat;
+          mask: url(../assets/logo-kao.png) center / contain no-repeat;
+  transition: transform 240ms var(--ease-out);
+}
+.corner.seal:hover .kao { transform: rotate(-6deg) scale(1.08); }
+@media (max-width: 360px) {
+  .corner { font-size: 13px; padding: 10px 8px; gap: 5px; }
+}
 .corner.tr { top: var(--edge); right: var(--edge); }
 .corner.bl { bottom: var(--edge); left: var(--edge); }
 .corner.br { bottom: var(--edge); right: var(--edge); }
@@ -74,7 +92,12 @@ main { padding: 96px var(--edge) 120px; max-width: 1680px; margin: 0 auto; }
   font-family: var(--sans); font-weight: 800; font-size: 13px;
   letter-spacing: 0.08em; text-transform: uppercase;
 }
-.zh { font-family: var(--serif); }
+.zh { font-family: var(--body); }
+/* 老宋体字面比 Garamond 大，正文里的中文缩一点，和英文视觉等大 */
+.zh, main p[lang|="zh"] { font-size: 0.9em; }
+.label .zh { font-size: inherit; }
+/* 大字标题仍用 Instrument Serif */
+.intro, .chapter-row .num, .chapter-sub, .day .num, .day h3 { font-family: var(--serif); }
 .section-head {
   display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
   border-top: 2px solid var(--ink); padding-top: 12px; margin-bottom: clamp(24px, 4vw, 56px);
@@ -116,10 +139,6 @@ figcaption .zh { display: block; color: var(--ink-soft); }
 .collage a .ph { transition: transform 320ms var(--ease-out); }
 .collage a:hover .ph { transform: translateY(-4px); }
 
-.logo {
-  position: absolute; z-index: 5; pointer-events: none;
-  width: min(62vw, 300px); left: 50%; top: -34px; transform: translateX(-50%);
-}
 
 @media (min-width: 900px) {
   .collage { grid-template-columns: repeat(12, 1fr); row-gap: 0; align-items: start; }
@@ -131,7 +150,6 @@ figcaption .zh { display: block; color: var(--ink-soft); }
   .collage .k6 { grid-column: 9 / 13; grid-row: 2 / 4; margin-top: 260px; }
   .collage .k7 { grid-column: 2 / 6;  grid-row: 4; margin-top: 96px; }
   .collage .k8 { grid-column: 8 / 11; grid-row: 4; margin-top: 180px; }
-  .logo { width: clamp(260px, 22vw, 380px); left: 54%; top: -10px; }
 }
 
 /* ---------- Home ---------- */
@@ -204,6 +222,8 @@ a.chapter-row:hover { background: var(--ink); color: var(--bg); }
 .day .date { margin-top: 10px; }
 .day h3 { font-size: clamp(28px, 3.2vw, 46px); line-height: 1.05; font-weight: 400; text-wrap: balance; }
 .day h3 .zh { display: block; font-size: 0.72em; margin-top: 6px; color: var(--ink-soft); }
+/* 中文标题只在空格（· 两侧）处换行，避免把"上野"这类词拆开；极端情况仍可强制断开 */
+.day h3 .zh, .chapter-sub .route .zh { word-break: keep-all; overflow-wrap: anywhere; }
 .day .stops { margin-top: 18px; font-size: 17px; line-height: 1.4; }
 .day .stops li { padding: 5px 0; border-top: 1px dotted var(--line); display: flex; justify-content: space-between; gap: 12px; }
 .day .stops li:last-child { border-bottom: 1px dotted var(--line); }
@@ -230,6 +250,15 @@ a.chapter-row:hover { background: var(--ink); color: var(--bg); }
   font-size: clamp(22px, 3vw, 40px); min-height: 44px; display: inline-flex; align-items: center;
 }
 .chapter-foot a:hover { background: var(--ink); color: var(--bg); text-decoration: none; }
+
+/* ---------- Home footer：导航里去掉"关于"后，从这里进入 ---------- */
+#about, #contact { scroll-margin-top: 80px; }
+.site-foot {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px;
+  margin-top: clamp(72px, 10vw, 160px); border-top: 1px solid var(--line); padding-top: 14px;
+}
+.site-foot a { text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 0.4em; }
+.site-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Motion ---------- */
 @media (prefers-reduced-motion: no-preference) {

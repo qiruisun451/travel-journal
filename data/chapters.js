@@ -5,7 +5,7 @@ window.CHAPTERS = [
     href: "japan.html",
     en: "Japan",
     zh: "日本",
-    metaEn: "15 days · October 2026",
-    metaZh: "十五日 · 2026 年 10 月",
+    metaEn: "15 days · 2026.10.05 – 2026.10.19",
+    metaZh: "十五日",
   },
 ];

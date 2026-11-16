@@ -102,7 +102,7 @@
       h("h1", { class: "chapter-title", text: c.en }),
       h("div", { class: "chapter-sub" },
         h("p", null, zh(c.zh)),
-        h("p", null, c.datesEn + " · ", zh(c.datesZh)),
+        h("p", null, c.dates),
         h("p", { class: "route" }, c.routeEn, h("br"), zh(c.routeZh)))
     ));
 
@@ -142,7 +142,7 @@
     });
     root.appendChild(h("section", { id: "days" },
       h("div", { class: "section-head" }, h("h2", { class: "label" }, "Day by day ", zh("逐日行程")),
-        h("span", { class: "label", text: c.datesEn })),
+        h("span", { class: "label", text: c.dates })),
       days));
 
     root.appendChild(h("nav", { class: "chapter-foot block", "aria-label": "Chapter navigation" },
