@@ -44,7 +44,7 @@ description: 为这个中英双语旅行手记网站新增或完善一个旅行�
 4. **路线图**（可选）：按 `references/maps.md` 做。
 5. **插画**（可选）：按 `references/illustration.md` 写提示词，用户生成后存到 `assets/chapters/<id>.jpg`，在 `chapters.js` 里填 `cover`。
 6. **校验**：按 `references/site-conventions.md` 的清单逐项检查，在手机宽度（375）和桌面宽度（1400）下都截图看。
-7. **提交**：只在用户要求时提交。仓库已设置本地 git 身份，没有远程仓库，不要 push。
+7. **提交与发布**：只在用户要求时提交。网站发布在 GitHub Pages：仓库 `qiruisun451/travel-journal`（公开），网址 https://qiruisun451.github.io/travel-journal/ ，推送到 `main` 后一两分钟自动更新。仓库是公开的，推送前确认没有住处照片、`Timeline.json`、真实邮箱等私人内容；提交作者邮箱用 GitHub 匿名邮箱（已在仓库本地配置）。用 `gh` 命令行操作 GitHub（GitHub 插件连不上）。
 
 ## 写死成日本的地方（做第二章时先改通用）
 
