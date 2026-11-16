@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Logo placeholder">
+  <!-- 占位 logo：把这个文件换成你自己的 logo（保持文件名 logo.svg，或在 HTML 里改路径） -->
+  <g transform="rotate(-9 180 110)" fill="none" stroke="#ffffff">
+    <ellipse cx="180" cy="110" rx="166" ry="78" stroke-width="3"/>
+    <text x="180" y="128" text-anchor="middle" fill="#ffffff" stroke="none"
+          font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="50" letter-spacing="1">YOUR NAME</text>
+  </g>
+</svg>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travel Journal · 旅行手记</title>
+  <meta name="description" content="A personal travel journal, one chapter per journey. 个人旅行手记，一段旅程一个章节。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to content 跳到正文</a>
+
+  <nav aria-label="Primary">
+    <a class="corner tl" href="index.html#about">About <span lang="zh-Hans">关于</span></a>
+    <a class="corner tr" href="index.html#chapters">Travel <span lang="zh-Hans">旅行</span></a>
+    <a class="corner bl" href="japan.html">Read <span lang="zh-Hans">阅读</span></a>
+    <a class="corner br" href="index.html#contact">Contact <span lang="zh-Hans">联系</span></a>
+  </nav>
+
+  <main id="main">
+    <h1 class="sr-only">Travel Journal 旅行手记</h1>
+
+    <section aria-label="Highlights">
+      <div class="collage" id="home-collage">
+        <img class="logo" src="assets/logo.svg" alt="" width="360" height="220">
+      </div>
+      <p class="intro">One chapter for every journey.</p>
+      <p lang="zh-Hans">一段旅程，一个章节。先从日本的十五天写起。</p>
+    </section>
+
+    <section id="chapters">
+      <div class="section-head">
+        <h2 class="label">Chapters <span class="zh" lang="zh-Hans">章节</span></h2>
+        <span class="label">By destination</span>
+      </div>
+      <ol class="chapters" id="chapter-list"></ol>
+    </section>
+
+    <section id="about">
+      <div class="section-head">
+        <h2 class="label">About <span class="zh" lang="zh-Hans">关于</span></h2>
+      </div>
+      <div class="two-col">
+        <!-- 把这两段换成你自己的介绍 -->
+        <p>I keep this site as a record of where I have been: the photographs I took, the routes I followed, and a few lines about each day.</p>
+        <p lang="zh-Hans">这个网站用来记录我去过的地方：拍下的照片、走过的路线，以及每一天的几句话。</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-head">
+        <h2 class="label">Contact <span class="zh" lang="zh-Hans">联系</span></h2>
+      </div>
+      <!-- 把邮箱换成你自己的 -->
+      <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
+    </section>
+  </main>
+
+  <script src="data/chapters.js"></script>
+  <script src="data/japan-photos.js"></script>
+  <script src="data/japan.js"></script>
+  <script src="js/site.js"></script>
+</body>
+</html>
