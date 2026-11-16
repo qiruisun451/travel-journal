@@ -1,5 +1,6 @@
 .DS_Store
 Timeline.json
 preview/
-.claude/
+.claude/*
+!.claude/skills/
 *.log

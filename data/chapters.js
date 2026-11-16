@@ -7,5 +7,6 @@ window.CHAPTERS = [
     zh: "日本",
     metaEn: "15 days · 2026.10.05 – 2026.10.19",
     metaZh: "十五日",
+    cover: "assets/chapters/japan.jpg",  // 章节插画，显示在首页章节列表里
   },
 ];

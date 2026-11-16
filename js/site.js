@@ -77,14 +77,16 @@
         h("a", { class: "chapter-row", href: c.href },
           h("span", { class: "num", text: roman(i + 1) + "." }),
           h("span", { class: "name" }, c.en, zh(c.zh)),
-          h("span", { class: "meta" }, c.metaEn, h("br"), zh(c.metaZh))
+          h("span", { class: "meta" }, c.metaEn, h("br"), zh(c.metaZh)),
+          c.cover ? h("img", { class: "cover", src: c.cover, alt: "", loading: "lazy", width: 1536, height: 1024 }) : null
         )));
     });
     list.appendChild(h("li", { class: "reveal" },
       h("div", { class: "chapter-row soon" },
         h("span", { class: "num", text: roman(window.CHAPTERS.length + 1) + "." }),
         h("span", { class: "name" }, "Next", zh("下一站")),
-        h("span", { class: "meta" }, "To be written", h("br"), zh("待续"))
+        h("span", { class: "meta" }, "To be written", h("br"), zh("待续")),
+        h("span", { class: "cover cover-empty", "aria-hidden": "true" })
       )));
 
     var target = document.getElementById("home-collage");
@@ -127,7 +129,15 @@
       var count = shotCount(c.id, n), shots = null;
       if (count) {
         shots = h("div", { class: "shots" });
-        for (var k = 1; k <= count; k++) shots.appendChild(photo(shotPath(c.id, n, k), d.en + ", photo " + k));
+        // 每两张一行；按照片宽高比分配宽度，同一行两张等高，上下两边都对齐，也不裁切
+        var row = null;
+        for (var k = 1; k <= count; k++) {
+          if (k % 2 === 1) { row = h("div", { class: "shot-row" }); shots.appendChild(row); }
+          var src = shotPath(c.id, n, k), frame = photo(src, d.en + ", photo " + k);
+          var size = (window.PHOTOS || {})[src.replace(/^photos\//, "")];
+          frame.style.flex = (size ? size[0] / size[1] : 0.8) + " 1 0";
+          row.appendChild(frame);
+        }
       }
       days.appendChild(h("li", { class: "day reveal" + (count ? "" : " text-only"), id: "day-" + n },
         h("div", null,
