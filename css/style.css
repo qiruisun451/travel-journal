@@ -309,18 +309,29 @@ body.home main { padding: 0 var(--edge) 72px; max-width: 1440px; }
 .dark-head h2, .dark-head-title { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
 .dark-head > span { color: var(--dark-mute); }
 .rolls { display: flex; flex-direction: column; gap: 16px; }
-.roll { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); text-decoration: none; border: 1px solid var(--dark-text); }
-.roll-cover { width: 100%; height: 100%; min-height: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.roll {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); text-decoration: none;
+  border: 1px solid var(--dark-text); transition: border-color 240ms var(--ease-out);
+}
+/* 插画按原比例完整显示：格子比图高时，上下用和插画同色的纸底补齐，不裁切 */
+.roll-media { display: flex; align-items: center; overflow: hidden; background: #f9e9d3; }
+.roll-cover { display: block; width: 100%; height: auto; transition: transform 700ms var(--ease-out); }
 @media (max-width: 760px) {
   .roll { grid-template-columns: 1fr; }
-  .roll-cover { height: auto; }
 }
+/* 悬停：边框和标题变成黄绿色，插画轻轻放大、微微倾斜，箭头往前推 */
+.roll-en, .roll-arrow { transition: color 240ms var(--ease-out), transform 240ms var(--ease-out); }
+.roll-arrow { display: inline-block; }
+a.roll:hover, a.roll:focus-visible { border-color: var(--bg); }
+a.roll:hover .roll-cover, a.roll:focus-visible .roll-cover { transform: scale(1.04) rotate(-0.8deg); }
+a.roll:hover .roll-en, a.roll:focus-visible .roll-en { color: var(--bg); }
+a.roll:hover .roll-arrow, a.roll:focus-visible .roll-arrow { transform: translateX(6px); }
 .roll-body {
   padding: clamp(24px, 3vw, 44px); box-sizing: border-box;
   display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
 }
 .roll-kicker { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bg); }
-.roll-en { display: block; font-family: var(--sans); font-weight: 800; text-transform: uppercase; font-size: clamp(64px, 9vw, 150px); line-height: 0.82; letter-spacing: -0.04em; }
+.roll-en { display: block; font-family: var(--sans); font-weight: 800; text-transform: uppercase; font-size: clamp(56px, 7vw, 120px); line-height: 0.82; letter-spacing: -0.04em; }
 .roll-zh { display: block; margin-top: 12px; font-family: var(--zh-serif); font-size: clamp(26px, 2.6vw, 36px); letter-spacing: 0.1em; }
 .roll-route { font-size: 20px; line-height: 1.4; color: var(--dark-soft); }
 .roll-route .zh { display: block; word-break: keep-all; overflow-wrap: anywhere; }
@@ -348,4 +359,5 @@ a.roll:hover .roll-open { color: var(--bg); }
 .dark-foot a { text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 0.4em; }
 @media (prefers-reduced-motion: reduce) {
   .hero-slide.on { transform: none; }
+  a.roll:hover .roll-cover, a.roll:hover .roll-arrow { transform: none; }
 }

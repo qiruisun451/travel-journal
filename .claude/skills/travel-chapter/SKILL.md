@@ -50,7 +50,7 @@ description: 为这个中英双语旅行手记网站新增或完善一个旅行�
 
 日本篇是第一章，有几处是按"只有一章"写的。做第二章时先把它们改成按章节读取，不要复制一份再改名：
 
-- 首页首屏轮换的是**所有章节**的 `highlights`：`index.html` 里每章加载 `data/<id>.js` 后紧跟一行 `<script>(window.ALL_CHAPTERS = window.ALL_CHAPTERS || []).push(window.CHAPTER);</script>`，`js/site.js` 的 `hero()` 会把它们汇在一起随机轮换，点击跳到 `<href>#day-N`。新章节只需照抄这两行，再在 `data/chapters.js` 加一项；首页不用加载 `-photos.js`。
+- 首页首屏轮换的是**所有章节**的 `highlights`：`index.html` 里每章加载 `data/<id>.js` 后紧跟一行 `<script>(window.ALL_CHAPTERS = window.ALL_CHAPTERS || []).push(window.CHAPTER);</script>`，`js/site.js` 的 `hero()` 会把它们汇在一起随机轮换，点击跳到 `<href>#day-N`。新章节照抄这几行（先加载 `data/<id>-photos.js`，首屏靠它判断照片横竖：宽屏只轮换横图、手机只轮换竖图），再在 `data/chapters.js` 加一项。首页章节卷里的插画按原比例完整显示，不裁切；悬停时边框和标题变黄绿、插画轻微放大倾斜、箭头前推。
 - `tools/import_photos.py` 里 `CHAPTER`、相机卡路径 `SOURCE`、手机文件夹 `PHONE_SOURCE`，以及"第几天 → 日期文件夹"的换算（`2026-10-%02d` % (4 + day)）都是日本篇的。改成从命令行参数或章节配置读取。
 - `js/map.js` 的 `REGIONS`、面板标题（Kansai / Kanto）、中间的连接条（Osaka → Tokyo 夜巴）、版权行（© 国土地理院）都写死了。建议把地图配置挪进 `data/<id>.js`（例如 `CHAPTER.maps`），`map.js` 只负责画。
 - 底图来自日本国土地理院（GSI），只覆盖日本。其他国家要换数据源，见 `references/maps.md`。

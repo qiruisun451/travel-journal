@@ -80,7 +80,8 @@
       var data = byId[c.id] || {};
       list.appendChild(h("li", { class: "reveal" },
         h("a", { class: "roll", href: c.href },
-          c.cover ? h("img", { class: "roll-cover", src: c.cover, alt: "", loading: "lazy", width: 1536, height: 1024 }) : null,
+          c.cover ? h("span", { class: "roll-media" },
+            h("img", { class: "roll-cover", src: c.cover, alt: "", loading: "lazy", width: 1536, height: 1024 })) : null,
           h("span", { class: "roll-body" },
             h("span", { class: "roll-kicker", text: "Roll " + roman(i + 1) + " · " + c.metaEn }),
             h("span", { class: "roll-name" },
@@ -88,7 +89,7 @@
               h("span", { class: "roll-zh", lang: "zh-Hans", text: c.zh + " · " + c.metaZh })),
             h("span", { class: "roll-route" },
               data.routeEn || "", data.routeZh ? zh(data.routeZh) : null,
-              h("span", { class: "roll-open" }, "Open the roll ", h("span", { lang: "zh-Hans", text: "阅读" }), " →"))
+              h("span", { class: "roll-open" }, "Open the roll ", h("span", { lang: "zh-Hans", text: "阅读" }), " ", h("span", { class: "roll-arrow", text: "→" })))
           ))));
     });
     list.appendChild(h("li", { class: "reveal" },
@@ -123,6 +124,15 @@
       });
     });
     if (!pool.length) return;
+
+    // 全屏背景会裁切：宽屏只轮换横图，竖屏（手机）只轮换竖图；同方向的不足两张时才混用
+    var sizes = window.PHOTOS || {};
+    var wide = window.innerWidth >= window.innerHeight;
+    var fit = pool.filter(function (p) {
+      var s = sizes[p.src.replace(/^photos\//, "")];
+      return !s || (s[0] >= s[1]) === wide;
+    });
+    if (fit.length >= 2) pool = fit;
 
     var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var SECONDS = 6, cur = -1, timer = null;
