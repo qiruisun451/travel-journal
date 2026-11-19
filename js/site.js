@@ -72,25 +72,114 @@
   function renderHome() {
     var list = document.getElementById("chapter-list");
     if (!list || !window.CHAPTERS) return;
+    var byId = {};
+    (window.ALL_CHAPTERS || []).forEach(function (c) { if (c) byId[c.id] = c; });
+
+    // 章节卷：每章一卷，后面跟一卷"未冲洗"的下一站
     window.CHAPTERS.forEach(function (c, i) {
+      var data = byId[c.id] || {};
       list.appendChild(h("li", { class: "reveal" },
-        h("a", { class: "chapter-row", href: c.href },
-          h("span", { class: "num", text: roman(i + 1) + "." }),
-          h("span", { class: "name" }, c.en, zh(c.zh)),
-          h("span", { class: "meta" }, c.metaEn, h("br"), zh(c.metaZh)),
-          c.cover ? h("img", { class: "cover", src: c.cover, alt: "", loading: "lazy", width: 1536, height: 1024 }) : null
-        )));
+        h("a", { class: "roll", href: c.href },
+          c.cover ? h("img", { class: "roll-cover", src: c.cover, alt: "", loading: "lazy", width: 1536, height: 1024 }) : null,
+          h("span", { class: "roll-body" },
+            h("span", { class: "roll-kicker", text: "Roll " + roman(i + 1) + " · " + c.metaEn }),
+            h("span", { class: "roll-name" },
+              h("span", { class: "roll-en", text: c.en }),
+              h("span", { class: "roll-zh", lang: "zh-Hans", text: c.zh + " · " + c.metaZh })),
+            h("span", { class: "roll-route" },
+              data.routeEn || "", data.routeZh ? zh(data.routeZh) : null,
+              h("span", { class: "roll-open" }, "Open the roll ", h("span", { lang: "zh-Hans", text: "阅读" }), " →"))
+          ))));
     });
     list.appendChild(h("li", { class: "reveal" },
-      h("div", { class: "chapter-row soon" },
-        h("span", { class: "num", text: roman(window.CHAPTERS.length + 1) + "." }),
-        h("span", { class: "name" }, "Next", zh("下一站")),
-        h("span", { class: "meta" }, "To be written", h("br"), zh("待续")),
-        h("span", { class: "cover cover-empty", "aria-hidden": "true" })
-      )));
+      h("div", { class: "roll-next" },
+        h("span", { class: "roll-kicker", text: "Roll " + roman(window.CHAPTERS.length + 1) + " · Undeveloped 未冲洗" }),
+        h("span", { class: "roll-next-name" }, "Next ", h("span", { lang: "zh-Hans", text: "下一站" })))));
 
-    var target = document.getElementById("home-collage");
-    if (target && window.CHAPTER) collage(target, window.CHAPTER, window.CHAPTERS[0].href);
+    hero(window.ALL_CHAPTERS || []);
+  }
+
+  /* ---------- home hero: 各章精选随机轮换 ---------- */
+  function hero(chapters) {
+    var stage = document.getElementById("hero-slides"),
+        cap = document.getElementById("hero-cap"),
+        dots = document.getElementById("hero-dots");
+    if (!stage || !cap || !dots) return;
+
+    var meta = {};
+    (window.CHAPTERS || []).forEach(function (c) { meta[c.id] = c; });
+    var pool = [];
+    chapters.forEach(function (c) {
+      if (!c || !c.highlights || !meta[c.id]) return;
+      c.highlights.forEach(function (item) {
+        var d = (c.days || [])[item.day - 1] || {};
+        pool.push({
+          src: shotPath(c.id, item.day, item.shot),
+          href: meta[c.id].href + "#day-" + item.day,
+          kicker: meta[c.id].en + " " + meta[c.id].zh + " · " + (d.date || ""),
+          en: roman(item.day) + ". " + item.en,
+          zh: item.zh,
+        });
+      });
+    });
+    if (!pool.length) return;
+
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var SECONDS = 6, cur = -1, timer = null;
+
+    var imgs = pool.map(function (p, i) {
+      var img = h("img", { class: "hero-slide", alt: "", decoding: "async" });
+      stage.appendChild(img);
+      var b = h("button", { class: "hero-dot", type: "button", "aria-label": (i + 1) + " / " + pool.length + " · " + p.zh, "aria-pressed": "false" }, h("span"));
+      b.addEventListener("click", function () { show(i); restart(); });
+      dots.appendChild(b);
+      return img;
+    });
+
+    function load(i, then) {
+      var img = imgs[i];
+      if (img.dataset.ready) { if (then) then(); return; }
+      img.onload = function () { img.dataset.ready = "1"; if (then) then(); };
+      img.onerror = function () { if (then) then(); };
+      if (!img.getAttribute("src")) img.src = pool[i].src;
+    }
+    function show(i) {
+      load(i, function () {
+        if (cur >= 0) imgs[cur].classList.remove("on");
+        imgs[i].classList.add("on");
+        Array.prototype.forEach.call(dots.children, function (b, j) {
+          b.classList.toggle("on", j === i);
+          b.setAttribute("aria-pressed", j === i ? "true" : "false");
+        });
+        var p = pool[i];
+        cap.href = p.href;
+        cap.textContent = "";
+        cap.appendChild(h("span", { class: "hero-kicker", text: p.kicker }));
+        cap.appendChild(h("span", { class: "hero-en", text: p.en }));
+        cap.appendChild(h("span", { class: "hero-zh", lang: "zh-Hans", text: p.zh }));
+        cur = i;
+        load(pick()); // 预先加载下一张候选，切换时不闪
+      });
+    }
+    var upcoming = null;
+    function pick() {
+      if (pool.length < 2) return 0;
+      var j = cur;
+      while (j === cur) j = Math.floor(Math.random() * pool.length);
+      upcoming = j;
+      return j;
+    }
+    function next() {
+      if (document.hidden) return;
+      show(upcoming != null && upcoming !== cur ? upcoming : pick());
+    }
+    function restart() {
+      clearInterval(timer);
+      if (!still && pool.length > 1) timer = setInterval(next, SECONDS * 1000);
+    }
+
+    show(Math.floor(Math.random() * pool.length));
+    restart();
   }
 
   /* ---------- chapter ---------- */

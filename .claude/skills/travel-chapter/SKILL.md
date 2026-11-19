@@ -11,7 +11,7 @@ description: 为这个中英双语旅行手记网站新增或完善一个旅行�
 
 | 文件 | 作用 |
 |---|---|
-| `index.html` | 首页：照片拼贴、章节列表、关于、联系、页脚 |
+| `index.html` | 首页（暗房版）：首屏背景随机轮换各章精选、章节卷、关于、页脚 |
 | `<id>.html` | 章节页外壳（如 `japan.html`），内容由脚本生成 |
 | `data/chapters.js` | 首页章节列表：`id / href / en / zh / metaEn / metaZh / cover` |
 | `data/<id>.js` | 章节内容 `window.CHAPTER`：标题、日期、路线文字、`highlights`（拼贴）、`days`（每天） |
@@ -50,7 +50,7 @@ description: 为这个中英双语旅行手记网站新增或完善一个旅行�
 
 日本篇是第一章，有几处是按"只有一章"写的。做第二章时先把它们改成按章节读取，不要复制一份再改名：
 
-- `index.html` 直接加载 `data/japan.js` 和 `data/japan-photos.js` 来做首页拼贴；左下角 "Read 阅读" 写死链接到 `japan.html`。有了第二章后，跟用户商量首页拼贴是"自动显示最新一章"还是"各章混选"，"Read" 指向最新一章。
+- 首页首屏轮换的是**所有章节**的 `highlights`：`index.html` 里每章加载 `data/<id>.js` 后紧跟一行 `<script>(window.ALL_CHAPTERS = window.ALL_CHAPTERS || []).push(window.CHAPTER);</script>`，`js/site.js` 的 `hero()` 会把它们汇在一起随机轮换，点击跳到 `<href>#day-N`。新章节只需照抄这两行，再在 `data/chapters.js` 加一项；首页不用加载 `-photos.js`。
 - `tools/import_photos.py` 里 `CHAPTER`、相机卡路径 `SOURCE`、手机文件夹 `PHONE_SOURCE`，以及"第几天 → 日期文件夹"的换算（`2026-10-%02d` % (4 + day)）都是日本篇的。改成从命令行参数或章节配置读取。
 - `js/map.js` 的 `REGIONS`、面板标题（Kansai / Kanto）、中间的连接条（Osaka → Tokyo 夜巴）、版权行（© 国土地理院）都写死了。建议把地图配置挪进 `data/<id>.js`（例如 `CHAPTER.maps`），`map.js` 只负责画。
 - 底图来自日本国土地理院（GSI），只覆盖日本。其他国家要换数据源，见 `references/maps.md`。
